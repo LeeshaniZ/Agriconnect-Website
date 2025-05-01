@@ -1,0 +1,441 @@
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - AgriConnect</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      display: flex;
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .sidebar {
+      width: 250px;
+      background-color: #e6f4ea;
+      padding: 20px;
+      border-right: 1px solid #ddd;
+    }
+    .sidebar h2 {
+      color: #2e7d32;
+      font-size: 24px;
+      margin-bottom: 30px;
+    }
+    .sidebar a {
+      display: block;
+      padding: 10px;
+      color: #2e7d32;
+      text-decoration: none;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
+    .sidebar a.active {
+      background-color: #2e7d32;
+      color: white;
+    }
+    .sidebar a:hover:not(.active) {
+      background-color: #d4e157;
+    }
+    .content {
+      flex: 1;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .animated-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .animated-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    .stat-card {
+      text-align: center;
+      padding: 20px;
+    }
+    .stat-icon {
+      font-size: 2.5rem;
+      color: #2e7d32;
+      margin-bottom: 10px;
+    }
+    .stat-value {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #333;
+    }
+    .stat-label {
+      font-size: 1rem;
+      color: #6c757d;
+      margin-bottom: 15px;
+    }
+    .progress-container {
+      margin-top: 15px;
+    }
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: #6c757d;
+      margin-bottom: 5px;
+    }
+    .progress {
+      height: 8px;
+      background-color: #e9ecef;
+      border-radius: 4px;
+    }
+    .progress-bar {
+      background-color: #2e7d32;
+      border-radius: 4px;
+    }
+    .recent-orders li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #e9ecef;
+    }
+    .order-info {
+      display: flex;
+      align-items: center;
+    }
+    .order-icon {
+      font-size: 1.5rem;
+      color: #2e7d32;
+      margin-right: 10px;
+    }
+    .order-details h6 {
+      margin: 0;
+      font-size: 1rem;
+    }
+    .order-details p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: #6c757d;
+    }
+    .order-status {
+      font-size: 0.85rem;
+      padding: 5px 10px;
+      border-radius: 12px;
+    }
+    .status-completed { background-color: #d4edda; color: #155724; }
+    .status-processing { background-color: #fff3cd; color: #856404; }
+    .status-pending { background-color: #cce5ff; color: #004085; }
+    .status-cancelled { background-color: #f8d7da; color: #721c24; }
+    .table-custom th, .table-custom td {
+      vertical-align: middle;
+    }
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .badge-custom {
+      padding: 5px 10px;
+      border-radius: 12px;
+    }
+    .badge-success { background-color: #2e7d32; color: white; }
+    .badge-warning { background-color: #ffc107; color: black; }
+    .badge-danger { background-color: #dc3545; color: white; }
+    .btn-outline-custom {
+      border-color: #2e7d32;
+      color: #2e7d32;
+    }
+    .btn-outline-custom:hover {
+      background-color: #2e7d32;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>AgriConnect</h2>
+    <a href="dash.html" class="active">Dashboard</a>
+    <a href="sup.html">Supplier Management</a>
+    <a href="purchase.html">Purchase Order</a>
+    <a href="inventory.html">Inventory Management</a>
+    <a href="payprocess.html">Payment Process</a>
+    <a href="report.html">Analytics & Report</a>
+    <a href="#" id="logoutBtn">Logout</a>
+  </div>
+  <div class="content">
+    <div class="header">
+      <div>
+        <h2>Dashboard</h2>
+        <p>Welcome to AgriConnect</p>
+      </div>
+      <div>
+        <span id="userEmail">Admin</span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-lg-3">
+        <div class="card animated-card">
+          <div class="card-body stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-truck"></i>
+            </div>
+            <div class="stat-value" id="totalSuppliers">0</div>
+            <div class="stat-label">Total Suppliers</div>
+            <div class="progress-container">
+              <div class="progress-label">
+                <span>Active</span>
+                <span id="activeSuppliers">0/0</span>
+              </div>
+              <div class="progress">
+                <div class="progress-bar" id="suppliersProgress" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="card animated-card">
+          <div class="card-body stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-clipboard-list"></i>
+            </div>
+            <div class="stat-value" id="totalPendingOrders">0</div>
+            <div class="stat-label">Pending Orders</div>
+            <div class="progress-container">
+              <div class="progress-label">
+                <span>This Week</span>
+                <span id="thisWeekPendingOrders">0/0</span>
+              </div>
+              <div class="progress">
+                <div class="progress-bar" id="pendingOrdersProgress" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="card animated-card">
+          <div class="card-body stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-box-open"></i>
+            </div>
+            <div class="stat-value" id="inventoryLevel">0%</div>
+            <div class="stat-label">Inventory Level</div>
+            <div class="progress-container">
+              <div class="progress-label">
+                <span>Capacity</span>
+                <span id="inventoryCapacity">0/0</span>
+              </div>
+              <div class="progress">
+                <div class="progress-bar" id="inventoryProgress" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="card animated-card">
+          <div class="card-body stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-money-bill-wave"></i>
+            </div>
+            <div class="stat-value" id="totalPaymentsDue">LKR 0</div>
+            <div class="stat-label">Payments Due</div>
+            <div class="progress-container">
+              <div class="progress-label">
+                <span>Overdue</span>
+                <span id="overduePayments">LKR 0</span>
+              </div>
+              <div class="progress">
+                <div class="progress-bar bg-warning" id="paymentsProgress" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-lg-6">
+        <div class="card animated-card">
+          <div class="card-header">
+            <span>Recent Orders</span>
+            <a href="purchase.html" class="btn btn-outline-custom btn-sm">View All</a>
+          </div>
+          <div class="card-body">
+            <ul class="recent-orders" id="recentOrders">
+              <li>Loading...</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card animated-card">
+          <div class="card-header">
+            <span>Supplier Performance</span>
+            <a href="sup.html" class="btn btn-outline-custom btn-sm">View All</a>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-custom">
+                <thead>
+                  <tr>
+                    <th>Supplier</th>
+                    <th>Rating</th>
+                    <th>Orders</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="supplierPerformance">
+                  <tr><td colspan="4">Loading...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script>
+    const API_BASE_URL = 'http://localhost:5000';
+    const firebaseConfig = {
+      apiKey: "AIzaSyCSS904T0ncg8F8TyPP-jVu3eX5kmdNHJw",
+      authDomain: "agriconnect-68cd0.firebaseapp.com",
+      projectId: "agriconnect-68cd0",
+      storageBucket: "agriconnect-68cd0.firebasestorage.app",
+      messagingSenderId: "988512261582",
+      appId: "1:988512261582:web:a6bad790b920b4e04b079f",
+      measurementId: "G-DSFWR06KE7"
+    };
+    firebase.initializeApp(firebaseConfig);
+    document.addEventListener('DOMContentLoaded', () => {
+      const logoutBtn = document.getElementById('logoutBtn');
+      logoutBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        try {
+          await firebase.auth().signOut();
+          localStorage.removeItem('token');
+          alert('Logged out successfully');
+          window.location.href = 'index.html';
+        } catch (error) {
+          console.error('Logout error:', error.message);
+          alert('Failed to log out: ' + error.message);
+        }
+      });
+    });
+    firebase.auth().onAuthStateChanged(async user => {
+      if (user) {
+        document.getElementById('userEmail').textContent = user.email || user.displayName || 'Admin';
+        try {
+          const idToken = await user.getIdToken(true);
+          localStorage.setItem('token', idToken);
+          await fetchDashboardData();
+        } catch (error) {
+          console.error('Error during auth:', error.message);
+          alert('Authentication error: ' + error.message);
+          localStorage.removeItem('token');
+          window.location.href = 'index.html';
+        }
+      } else {
+        localStorage.removeItem('token');
+        window.location.href = 'index.html';
+      }
+    });
+    async function fetchDashboardData() {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/dashboard/data`, {
+          headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+        });
+        if (!response.ok) throw new Error('Failed to fetch dashboard data');
+        const data = await response.json();
+        updateDashboard(data);
+      } catch (error) {
+        console.error('Error loading dashboard:', error.message);
+        alert('Error loading dashboard: ' + error.message);
+      }
+    }
+    function updateDashboard(data) {
+      document.getElementById('totalSuppliers').textContent = data.totalSuppliers || 0;
+      document.getElementById('activeSuppliers').textContent = `${data.activeSuppliers || 0}/${data.totalSuppliers || 0}`;
+      document.getElementById('suppliersProgress').style.width = `${((data.activeSuppliers || 0) / (data.totalSuppliers || 1)) * 100}%`;
+      document.getElementById('totalPendingOrders').textContent = data.totalPendingOrders || 0;
+      document.getElementById('thisWeekPendingOrders').textContent = `${data.thisWeekPendingOrders || 0}/${data.totalPendingOrders || 0}`;
+      document.getElementById('pendingOrdersProgress').style.width = `${((data.thisWeekPendingOrders || 0) / (data.totalPendingOrders || 1)) * 100}%`;
+      document.getElementById('inventoryLevel').textContent = `${data.inventoryLevel || 0}%`;
+      document.getElementById('inventoryCapacity').textContent = `${data.totalQuantity || 0}/${data.totalInventoryCapacity || 1000}`;
+      document.getElementById('inventoryProgress').style.width = `${data.inventoryLevel || 0}%`;
+      document.getElementById('totalPaymentsDue').textContent = `LKR ${(data.totalPaymentsDue || 0).toLocaleString()}`;
+      document.getElementById('overduePayments').textContent = `LKR ${(data.overduePayments || 0).toLocaleString()}`;
+      document.getElementById('paymentsProgress').style.width = `${((data.overduePayments || 0) / (data.totalPaymentsDue || 1)) * 100}%`;
+      const recentOrders = document.getElementById('recentOrders');
+      recentOrders.innerHTML = data.recentOrders && data.recentOrders.length ? data.recentOrders.map(order => `
+        <li>
+          <div class="order-info">
+            <div class="order-icon">
+              <i class="fas fa-${getVegetableIcon(order.vegetable)}"></i>
+            </div>
+            <div class="order-details">
+              <h6>${order.vegetable} (${order.quantity}kg)</h6>
+              <p>${order.customer} • ${order.date}</p>
+            </div>
+          </div>
+          <span class="order-status status-${(order.status || '').toLowerCase()}">${order.status || 'Unknown'}</span>
+        </li>
+      `).join('') : '<li>No recent orders</li>';
+      const supplierPerformance = document.getElementById('supplierPerformance');
+      supplierPerformance.innerHTML = data.supplierPerformance && data.supplierPerformance.length ? data.supplierPerformance.map(supplier => `
+        <tr>
+          <td>
+            <div class="d-flex align-items-center">
+              <img src="${supplier.avatar || 'https://via.placeholder.com/40'}" alt="Supplier" class="avatar me-3">
+              <div>
+                <h6 class="mb-0">${supplier.name}</h6>
+                <small class="text-muted">${supplier.category}</small>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="d-flex align-items-center">
+              <i class="fas fa-star text-warning me-1"></i>
+              <span>${supplier.rating || 0}</span>
+            </div>
+          </td>
+          <td>${supplier.orders || 0}</td>
+          <td><span class="badge badge-custom badge-${getBadgeClass(supplier.status)}">${supplier.status || 'Unknown'}</span></td>
+        </tr>
+      `).join('') : '<tr><td colspan="4">No supplier data</td></tr>';
+    }
+    function getVegetableIcon(vegetable) {
+      const icons = {
+        Carrot: 'carrot',
+        Tomato: 'apple-alt',
+        'Bell Pepper': 'pepper-hot',
+        Spinach: 'leaf',
+        Potato: 'seedling'
+      };
+      return icons[vegetable] || 'carrot';
+    }
+    function getBadgeClass(status) {
+      return {
+        Active: 'success',
+        Limited: 'warning',
+        Inactive: 'danger'
+      }[status] || 'secondary';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "name": "agriconnect12",
+  "version": "1.0.0",
+  "description": "AgriConnect web application for managing agricultural supply chain",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "nodemon server/index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.21.2",
+    "firebase-admin": "^13.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
