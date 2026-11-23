@@ -82,7 +82,7 @@
         localStorage.setItem('token', idToken);
         const response = await fetch(`${API_BASE_URL}/api/users/signup`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${idToken}` },
           body: JSON.stringify({ username, email })
         });
         if (!response.ok) {
