@@ -14,13 +14,13 @@ The repository contains the AgriConnect web application. The project uses a Node
 
 ## Getting started
 
-The Node.js backend and Firebase Admin setup are now included under the `agriconnect12` directory (the directory name currently contains a trailing space).
+The Node.js backend and Firebase Admin setup are now included under the `agriconnect12` directory.
 
 1. Install Node.js 18 or later.
 2. Open a terminal and enter the project directory:
 
    ```powershell
-   cd agricონnect12
+   cd agricconnect12
    ```
 
 3. Install backend dependencies:
@@ -51,7 +51,6 @@ The Express server serves the frontend and API from the same origin, so the page
 
 ## Repository notes
 
-- The existing source directory is named `agriconnect12` with a trailing space. Keep that exact name when opening it from a terminal, or rename it in a separate change that updates all references.
 - The analytics export endpoint referenced by the frontend is not yet implemented in the current backend routes.
 - Payment processing and payment totals are not implemented. The dashboard now labels these figures as `Not configured` rather than showing invented balances.
 - Firebase Admin requires local Application Default Credentials through `GOOGLE_APPLICATION_CREDENTIALS`; no service-account key is included in this repository.
