@@ -17,19 +17,26 @@ router.get('/', authenticate, async (req, res) => {
 router.post('/', authenticate, async (req, res) => {
   try {
     const { name, supplierId, deliveryDate, vegetables, status, totalAmount } = req.body;
-    if (!name || !deliveryDate || !vegetables || !status) {
-      return res.status(400).json({ error: 'Invalid input' });
+    const cleanName = typeof name === 'string' ? name.trim() : '';
+    const cleanStatus = typeof status === 'string' ? status.trim() : '';
+    const parsedDate = Date.parse(deliveryDate);
+    const parsedTotal = totalAmount === undefined || totalAmount === null ? 0 : Number(totalAmount);
+
+    if (!cleanName || !cleanStatus || !Array.isArray(vegetables) || vegetables.length === 0 ||
+        !deliveryDate || Number.isNaN(parsedDate) || !Number.isFinite(parsedTotal) || parsedTotal < 0) {
+      return res.status(400).json({ error: 'A name, valid delivery date, at least one vegetable and a non-negative total are required' });
     }
+
     const docRef = await db.collection('purchases').add({
-      name,
+      name: cleanName,
       supplierId: supplierId || null,
       deliveryDate,
       vegetables,
-      status,
-      totalAmount: totalAmount || 0,
+      status: cleanStatus,
+      totalAmount: parsedTotal,
       createdAt: new Date()
     });
-    res.status(201).json({ id: docRef.id, name, supplierId, deliveryDate, vegetables, status, totalAmount });
+    res.status(201).json({ id: docRef.id, name: cleanName, supplierId, deliveryDate, vegetables, status: cleanStatus, totalAmount: parsedTotal });
   } catch (error) {
     console.error('Error creating purchase:', error.message);
     res.status(500).json({ error: 'Internal server error' });
@@ -40,19 +47,26 @@ router.put('/:id', authenticate, async (req, res) => {
   try {
     const { id } = req.params;
     const { name, supplierId, deliveryDate, vegetables, status, totalAmount } = req.body;
-    if (!name || !deliveryDate || !vegetables || !status) {
-      return res.status(400).json({ error: 'Invalid input' });
+    const cleanName = typeof name === 'string' ? name.trim() : '';
+    const cleanStatus = typeof status === 'string' ? status.trim() : '';
+    const parsedDate = Date.parse(deliveryDate);
+    const parsedTotal = totalAmount === undefined || totalAmount === null ? 0 : Number(totalAmount);
+
+    if (!cleanName || !cleanStatus || !Array.isArray(vegetables) || vegetables.length === 0 ||
+        !deliveryDate || Number.isNaN(parsedDate) || !Number.isFinite(parsedTotal) || parsedTotal < 0) {
+      return res.status(400).json({ error: 'A name, valid delivery date, at least one vegetable and a non-negative total are required' });
     }
+
     await db.collection('purchases').doc(id).update({
-      name,
+      name: cleanName,
       supplierId: supplierId || null,
       deliveryDate,
       vegetables,
-      status,
-      totalAmount: totalAmount || 0,
+      status: cleanStatus,
+      totalAmount: parsedTotal,
       updatedAt: new Date()
     });
-    res.json({ id, name, supplierId, deliveryDate, vegetables, status, totalAmount });
+    res.json({ id, name: cleanName, supplierId, deliveryDate, vegetables, status: cleanStatus, totalAmount: parsedTotal });
   } catch (error) {
     console.error('Error updating purchase:', error.message);
     res.status(500).json({ error: 'Internal server error' });
