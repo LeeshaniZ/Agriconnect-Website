@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { db } = require('../config/firebaseAdmin');
-const authenticate = require('../middleware/auth');
+const authenticate = require('./auth');
 
 router.get('/data', authenticate, async (req, res) => {
   try {
