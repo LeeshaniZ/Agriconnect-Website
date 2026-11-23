@@ -1,0 +1,19 @@
+{
+  "name": "agriconnect",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Agricultural supply-chain management application",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "firebase-admin": "^13.0.2"
+  }
+}
