@@ -17,11 +17,21 @@ router.get('/', authenticate, async (req, res) => {
 router.post('/', authenticate, async (req, res) => {
   try {
     const { item, quantity, unit } = req.body;
-    if (!item || quantity < 0 || !unit) {
-      return res.status(400).json({ error: 'Invalid input' });
+    const cleanItem = typeof item === 'string' ? item.trim() : '';
+    const cleanUnit = typeof unit === 'string' ? unit.trim() : '';
+    const numericQuantity = Number(quantity);
+
+    if (!cleanItem || !cleanUnit || quantity === '' || !Number.isFinite(numericQuantity) || numericQuantity < 0) {
+      return res.status(400).json({ error: 'Item, unit and a non-negative numeric quantity are required' });
     }
-    const docRef = await db.collection('inventory').add({ item, quantity, unit, createdAt: new Date() });
-    res.status(201).json({ id: docRef.id, item, quantity, unit });
+
+    const docRef = await db.collection('inventory').add({
+      item: cleanItem,
+      quantity: numericQuantity,
+      unit: cleanUnit,
+      createdAt: new Date()
+    });
+    res.status(201).json({ id: docRef.id, item: cleanItem, quantity: numericQuantity, unit: cleanUnit });
   } catch (error) {
     console.error('Error adding inventory:', error.message);
     res.status(500).json({ error: 'Internal server error' });
@@ -32,11 +42,21 @@ router.put('/:id', authenticate, async (req, res) => {
   try {
     const { id } = req.params;
     const { item, quantity, unit } = req.body;
-    if (!item || quantity < 0 || !unit) {
-      return res.status(400).json({ error: 'Invalid input' });
+    const cleanItem = typeof item === 'string' ? item.trim() : '';
+    const cleanUnit = typeof unit === 'string' ? unit.trim() : '';
+    const numericQuantity = Number(quantity);
+
+    if (!cleanItem || !cleanUnit || quantity === '' || !Number.isFinite(numericQuantity) || numericQuantity < 0) {
+      return res.status(400).json({ error: 'Item, unit and a non-negative numeric quantity are required' });
     }
-    await db.collection('inventory').doc(id).update({ item, quantity, unit, updatedAt: new Date() });
-    res.json({ id, item, quantity, unit });
+
+    await db.collection('inventory').doc(id).update({
+      item: cleanItem,
+      quantity: numericQuantity,
+      unit: cleanUnit,
+      updatedAt: new Date()
+    });
+    res.json({ id, item: cleanItem, quantity: numericQuantity, unit: cleanUnit });
   } catch (error) {
     console.error('Error updating inventory:', error.message);
     res.status(500).json({ error: 'Internal server error' });
