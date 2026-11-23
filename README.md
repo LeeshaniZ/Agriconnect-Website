@@ -20,7 +20,7 @@ The Node.js backend and Firebase Admin setup are now included under the `agricon
 2. Open a terminal and enter the project directory:
 
    ```powershell
-   cd agricconnect12
+   cd agriconnect12
    ```
 
 3. Install backend dependencies:
