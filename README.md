@@ -46,12 +46,12 @@ Do not commit Firebase service-account JSON files, private keys, passwords, or e
 
 ## Notes
 
-This README describes the project at a high level. Refer to the source folders for the current implementation and available scripts.
+The Express server serves the frontend and API from the same origin, so the pages use the current host rather than a hard-coded localhost URL.
 
 
 ## Repository notes
 
 - The existing source directory is named `agriconnect12 ` with a trailing space. Keep that exact name when opening it from a terminal, or rename it in a separate change that updates all references.
 - The analytics export endpoint referenced by the frontend is not yet implemented in the current backend routes.
-- Payment totals in the dashboard route are placeholder values and should not be presented as live financial data.
+- Payment processing and payment totals are not implemented. The dashboard now labels these figures as `Not configured` rather than showing invented balances.
 - Firebase Admin requires local Application Default Credentials through `GOOGLE_APPLICATION_CREDENTIALS`; no service-account key is included in this repository.
