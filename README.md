@@ -27,3 +27,12 @@ Do not commit Firebase service-account JSON files, private keys, passwords, or e
 ## Notes
 
 This README describes the project at a high level. Refer to the source folders for the current implementation and available scripts.
+
+
+## Repository status and setup limitations
+
+The current repository contains frontend pages and several Express route modules, but it does not yet include a complete, reproducible backend setup. In particular, the route middleware imports a Firebase Admin module from `config/firebaseAdmin`, and the repository currently does not contain that configuration module or a Node.js package manifest. A fresh clone therefore needs those backend setup files before the API can be started reliably.
+
+Before running the backend, add a package manifest with the required dependencies and provide Firebase Admin credentials through environment variables or a securely mounted service-account file. Never commit Firebase private keys or service-account JSON files. The Firebase Admin initialisation module should validate its configuration and fail clearly when required credentials are missing.
+
+The source folder currently has a trailing space in its name (`agriconnect12 `). Keep that exact folder name when navigating the existing source tree, or rename it consistently across the repository before changing import paths.
