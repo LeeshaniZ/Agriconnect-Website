@@ -378,9 +378,16 @@
       document.getElementById('inventoryLevel').textContent = `${data.inventoryLevel || 0}%`;
       document.getElementById('inventoryCapacity').textContent = `${data.totalQuantity || 0}/${data.totalInventoryCapacity || 1000}`;
       document.getElementById('inventoryProgress').style.width = `${data.inventoryLevel || 0}%`;
-      document.getElementById('totalPaymentsDue').textContent = `LKR ${(data.totalPaymentsDue || 0).toLocaleString()}`;
-      document.getElementById('overduePayments').textContent = `LKR ${(data.overduePayments || 0).toLocaleString()}`;
-      document.getElementById('paymentsProgress').style.width = `${((data.overduePayments || 0) / (data.totalPaymentsDue || 1)) * 100}%`;
+      const paymentDataAvailable = data.paymentDataAvailable === true;
+      document.getElementById('totalPaymentsDue').textContent = paymentDataAvailable
+        ? `LKR ${(data.totalPaymentsDue || 0).toLocaleString()}`
+        : 'Not configured';
+      document.getElementById('overduePayments').textContent = paymentDataAvailable
+        ? `LKR ${(data.overduePayments || 0).toLocaleString()}`
+        : 'Not configured';
+      document.getElementById('paymentsProgress').style.width = paymentDataAvailable
+        ? `${((data.overduePayments || 0) / (data.totalPaymentsDue || 1)) * 100}%`
+        : '0%';
       const recentOrders = document.getElementById('recentOrders');
       recentOrders.innerHTML = data.recentOrders && data.recentOrders.length ? data.recentOrders.map(order => `
         <li>
